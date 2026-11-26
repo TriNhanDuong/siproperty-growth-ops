@@ -33,7 +33,7 @@ Price observation: `{ listingId, projectId, sourceUrl, observedAt, price: {amoun
 2. Next.js verifies same-origin requests, content type, 16 KiB size, schema and idempotency key. The server-only router token is never returned to the browser. An upstream request has a five-second timeout and rejects redirects.
 3. Router /v1/leads checks bearer token, 64 KiB size and schema, then enqueues. /webhooks/meta uses GET verification or signed POST delivery instead. Unconfigured Meta ingress fails closed. Unknown methods/routes return 404.
 4. A 202 means **accepted into the in-memory demo queue only**, not delivery to a durable system or CRM. Bounded capacity returns 503; key conflict returns 409. Health returns counts and mode, not contact payloads.
-5. Demo worker drains every second into a sink that discards data. Failed delivery uses 1s / 2s / 4s bounded exponential scheduling and dead-letters after three attempts. The default successful sink never calls an external service. Terminal entries expire after one hour on subsequent enqueue; pending entries are retained. There is no cross-process coordination.
+5. Demo worker drains every second into a sink that discards data. Failed delivery retries after 1s and 2s, then dead-letters after the third failed attempt. The default successful sink never calls an external service. Terminal entries expire after one hour on subsequent enqueue; pending entries are retained. There is no cross-process coordination.
 
 The volatile queue exists to make local behavior testable. Do not put this behind a live ad webhook: a restart loses accepted work, process replicas cannot deduplicate, and a demo delivery is not a business delivery.
 

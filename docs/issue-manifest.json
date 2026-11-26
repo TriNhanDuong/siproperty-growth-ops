@@ -1,0 +1,142 @@
+[
+  {
+    "id": "LP-01",
+    "number": 1,
+    "title": "[LP-01] Validate project configuration and generate project-specific SEO metadata",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/1",
+    "labels": ["bot-1-landing-page", "day-1-sprint", "priority:high"]
+  },
+  {
+    "id": "LP-02",
+    "number": 2,
+    "title": "[LP-02] Add a consent-aware first-party experiment event adapter",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/2",
+    "labels": ["bot-1-landing-page", "priority:medium"]
+  },
+  {
+    "id": "LP-03",
+    "number": 3,
+    "title": "[LP-03] Establish measurable performance and accessibility budgets for campaign pages",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/3",
+    "labels": ["bot-1-landing-page", "priority:medium"]
+  },
+  {
+    "id": "LP-04",
+    "number": 4,
+    "title": "[LP-04] Package a deployable landing/router stack with rollback and health checks",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/4",
+    "labels": ["bot-1-landing-page", "priority:medium"]
+  },
+  {
+    "id": "LR-01",
+    "number": 5,
+    "title": "[LR-01] Retrieve Meta lead details through a permission-gated adapter",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/5",
+    "labels": ["bot-2-lead-webhook", "day-1-sprint", "priority:high"]
+  },
+  {
+    "id": "LR-02",
+    "number": 6,
+    "title": "[LR-02] Replace the volatile queue with a transactional durable inbox/outbox",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/6",
+    "labels": ["bot-2-lead-webhook", "day-1-sprint", "priority:high"]
+  },
+  {
+    "id": "LR-03",
+    "number": 8,
+    "title": "[LR-03] Implement Zalo OA webhook authentication and normalized event mapping",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/8",
+    "labels": ["bot-2-lead-webhook", "priority:medium"]
+  },
+  {
+    "id": "LR-04",
+    "number": 10,
+    "title": "[LR-04] Deliver leads to Google Sheets with retry-safe row identity",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/10",
+    "labels": ["bot-2-lead-webhook", "priority:medium"]
+  },
+  {
+    "id": "LR-05",
+    "number": 11,
+    "title": "[LR-05] Add a CRM delivery adapter and redacted failure alerts",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/11",
+    "labels": ["bot-2-lead-webhook", "priority:medium"]
+  },
+  {
+    "id": "LR-06",
+    "number": 13,
+    "title": "[LR-06] Gate production ingress with abuse controls and data retention",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/13",
+    "labels": ["bot-2-lead-webhook", "priority:medium"]
+  },
+  {
+    "id": "MS-01",
+    "number": 14,
+    "title": "[MS-01] Build a permission-gated, bounded live-source fetch policy",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/14",
+    "labels": ["bot-3-scraper", "day-1-sprint", "priority:high"]
+  },
+  {
+    "id": "MS-02",
+    "number": 15,
+    "title": "[MS-02] Detect scraper DOM drift with versioned extraction fixtures",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/15",
+    "labels": ["bot-3-scraper", "priority:medium"]
+  },
+  {
+    "id": "MS-03",
+    "number": 17,
+    "title": "[MS-03] Persist observations and export comparable pricing summaries",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/17",
+    "labels": ["bot-3-scraper", "priority:medium"]
+  },
+  {
+    "id": "MS-04",
+    "number": 18,
+    "title": "[MS-04] Schedule bounded scraper runs with health and failure artifacts",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/18",
+    "labels": ["bot-3-scraper", "priority:medium"]
+  },
+  {
+    "id": "QA-01",
+    "number": 19,
+    "title": "[QA-01] Fix reproduced 403 rejection of same-origin form A/B submissions",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/19",
+    "labels": ["bot-4-qa", "day-1-sprint", "priority:high", "bug"]
+  },
+  {
+    "id": "QA-02",
+    "number": 20,
+    "title": "[QA-02] Fix reproduced strict-locator collision with the Next route announcer",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/20",
+    "labels": ["bot-4-qa", "day-1-sprint", "priority:high", "bug"]
+  },
+  {
+    "id": "QA-03",
+    "number": 21,
+    "title": "[QA-03] Add automated accessibility checks and keyboard assertions",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/21",
+    "labels": ["bot-4-qa", "day-1-sprint", "priority:high"]
+  },
+  {
+    "id": "QA-04",
+    "number": 23,
+    "title": "[QA-04] Add an opt-in deployed form smoke check with synthetic data",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/23",
+    "labels": ["bot-4-qa", "priority:medium"]
+  },
+  {
+    "id": "QA-05",
+    "number": 24,
+    "title": "[QA-05] Create a least-privilege QA issue/PR reporter with dry-run mode",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/24",
+    "labels": ["bot-4-qa", "priority:medium"]
+  },
+  {
+    "id": "QA-06",
+    "number": 25,
+    "title": "[QA-06] Record daily sprint evidence and enforce the release checklist",
+    "url": "https://github.com/TriNhanDuong/siproperty-growth-ops/issues/25",
+    "labels": ["bot-4-qa", "priority:medium"]
+  }
+]

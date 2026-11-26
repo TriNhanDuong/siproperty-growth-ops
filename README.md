@@ -8,6 +8,8 @@ A public engineering pilot for real estate marketing and growth operations: mult
 
 ## Current state
 
+[CI evidence — Windows/Ubuntu verify pass, browser job fails](https://github.com/TriNhanDuong/siproperty-growth-ops/actions/runs/45749559829). The two confirmed Day-1 groups are [form submissions rejected with 403](https://github.com/TriNhanDuong/siproperty-growth-ops/issues/19) and [ambiguous alert selectors](https://github.com/TriNhanDuong/siproperty-growth-ops/issues/20). No failing browser assertion is suppressed.
+
 | Component                           | Verified state                                                                                                                                                                        |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Build (Windows)                     | PASS — TypeScript, Next.js and bundled router                                                                                                                                         |
