@@ -1,0 +1,508 @@
+[
+  {
+    "id": "LP-01",
+    "title": "Validate project configuration and generate project-specific SEO metadata",
+    "bot": 1,
+    "day1": true,
+    "files": [
+      "apps/landing-pages/src/lib/projects.ts",
+      "apps/landing-pages/src/app/projects/[slug]/page.tsx",
+      "tests/unit/projects.test.ts"
+    ],
+    "goal": "Replace the inferred project array with a validated project configuration boundary and explicit per-project SEO fields. The current three projects are synthetic; retain that data boundary.",
+    "criteria": [
+      "Reject duplicate slugs, unsupported project IDs and invalid metadata at configuration load.",
+      "Generate canonical URL and Open Graph metadata from a configured public base URL; never infer a deployment URL from untrusted Host headers.",
+      "Unknown slugs remain 404; both variants share the canonical project URL.",
+      "Add tests for invalid config and all three project metadata records."
+    ],
+    "verify": ["npm test -- tests/unit/projects.test.ts", "npm run build"],
+    "labels": ["bot-1-landing-page", "day-1-sprint", "priority:high"],
+    "body": "## Goal / Context\n\nReplace the inferred project array with a validated project configuration boundary and explicit per-project SEO fields. The current three projects are synthetic; retain that data boundary.\n\n## Exact Files to Touch\n\n- `apps/landing-pages/src/lib/projects.ts`\n- `apps/landing-pages/src/app/projects/[slug]/page.tsx`\n- `tests/unit/projects.test.ts` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Reject duplicate slugs, unsupported project IDs and invalid metadata at configuration load.\n- [ ] Generate canonical URL and Open Graph metadata from a configured public base URL; never infer a deployment URL from untrusted Host headers.\n- [ ] Unknown slugs remain 404; both variants share the canonical project URL.\n- [ ] Add tests for invalid config and all three project metadata records.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/unit/projects.test.ts\nnpm run build\n```\n\n## Execution Notes\n\nOwner: `bot-1-landing-page`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LP-02",
+    "title": "Add a consent-aware first-party experiment event adapter",
+    "bot": 1,
+    "files": [
+      "apps/landing-pages/src/components/LeadForm.tsx",
+      "apps/landing-pages/src/lib/analytics.ts",
+      "tests/unit/analytics.test.ts"
+    ],
+    "goal": "Measure variant exposure and successful queueing without leaking names, phone numbers or failed submissions. The initial adapter must default to disabled and write only to a test-injected sink.",
+    "criteria": [
+      "Define typed exposure and lead_queued events with projectId, variant and event ID only.",
+      "No analytics network request occurs before explicit analytics consent; form processing consent remains separate.",
+      "A retry cannot emit two conversion events for the same accepted attempt.",
+      "Tests assert that names, phone numbers, raw request bodies and router tokens never enter analytics payloads."
+    ],
+    "verify": ["npm test -- tests/unit/analytics.test.ts", "npm run typecheck"],
+    "labels": ["bot-1-landing-page", "priority:medium"],
+    "body": "## Goal / Context\n\nMeasure variant exposure and successful queueing without leaking names, phone numbers or failed submissions. The initial adapter must default to disabled and write only to a test-injected sink.\n\n## Exact Files to Touch\n\n- `apps/landing-pages/src/components/LeadForm.tsx`\n- `apps/landing-pages/src/lib/analytics.ts` (add)\n- `tests/unit/analytics.test.ts` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Define typed exposure and lead_queued events with projectId, variant and event ID only.\n- [ ] No analytics network request occurs before explicit analytics consent; form processing consent remains separate.\n- [ ] A retry cannot emit two conversion events for the same accepted attempt.\n- [ ] Tests assert that names, phone numbers, raw request bodies and router tokens never enter analytics payloads.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/unit/analytics.test.ts\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-1-landing-page`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LP-03",
+    "title": "Establish measurable performance and accessibility budgets for campaign pages",
+    "bot": 1,
+    "files": [
+      "apps/landing-pages/src/app/globals.css",
+      "apps/landing-pages/src/app/layout.tsx",
+      "tests/performance/lighthouse.mjs",
+      ".github/workflows/performance.yml",
+      "package.json"
+    ],
+    "goal": "Create a repeatable Lighthouse budget against the built local pages before introducing third-party pixels or media. Report measured scores rather than claiming field Core Web Vitals.",
+    "criteria": [
+      "Run all three project pages in mobile Lighthouse CI with fixed configuration and uploaded JSON evidence.",
+      "Enforce performance >=90, accessibility >=95, CLS <=0.1 and no external font requests for the local baseline.",
+      "Document that lab LCP is not production field data; capture actual values and browser version.",
+      "Add npm run test:performance and fail the workflow if budgets regress."
+    ],
+    "verify": ["npm run build", "npm run test:performance"],
+    "labels": ["bot-1-landing-page", "priority:medium"],
+    "body": "## Goal / Context\n\nCreate a repeatable Lighthouse budget against the built local pages before introducing third-party pixels or media. Report measured scores rather than claiming field Core Web Vitals.\n\n## Exact Files to Touch\n\n- `apps/landing-pages/src/app/globals.css`\n- `apps/landing-pages/src/app/layout.tsx`\n- `tests/performance/lighthouse.mjs` (add)\n- `.github/workflows/performance.yml` (add)\n- `package.json`\n\n## Concrete Acceptance Criteria\n\n- [ ] Run all three project pages in mobile Lighthouse CI with fixed configuration and uploaded JSON evidence.\n- [ ] Enforce performance >=90, accessibility >=95, CLS <=0.1 and no external font requests for the local baseline.\n- [ ] Document that lab LCP is not production field data; capture actual values and browser version.\n- [ ] Add npm run test:performance and fail the workflow if budgets regress.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm run build\nnpm run test:performance\n```\n\n## Execution Notes\n\nOwner: `bot-1-landing-page`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LP-04",
+    "title": "Package a deployable landing/router stack with rollback and health checks",
+    "bot": 1,
+    "files": [
+      "apps/landing-pages/next.config.ts",
+      "Dockerfile",
+      "compose.yaml",
+      ".dockerignore",
+      "docs/deployment.md"
+    ],
+    "goal": "Package the pilot reproducibly without deploying or loading real customer data. Depend on LR-02 before claiming a production-ready durable service.",
+    "depends": ["LR-02"],
+    "criteria": [
+      "Use a multi-stage build with pinned base image digest and non-root runtime.",
+      "Inject secrets only at runtime; no .env files, tokens or node build caches in the image.",
+      "Provide landing and router health checks, resource limits and documented rollback commands.",
+      "Explain the remaining production gates; compose uses synthetic data and demo mode unless explicitly configured."
+    ],
+    "verify": [
+      "docker compose config --quiet",
+      "docker compose build",
+      "npm run verify"
+    ],
+    "labels": ["bot-1-landing-page", "priority:medium"],
+    "body": "## Goal / Context\n\nPackage the pilot reproducibly without deploying or loading real customer data. Depend on LR-02 before claiming a production-ready durable service.\n\n## Exact Files to Touch\n\n- `apps/landing-pages/next.config.ts`\n- `Dockerfile` (add)\n- `compose.yaml` (add)\n- `.dockerignore` (add)\n- `docs/deployment.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Use a multi-stage build with pinned base image digest and non-root runtime.\n- [ ] Inject secrets only at runtime; no .env files, tokens or node build caches in the image.\n- [ ] Provide landing and router health checks, resource limits and documented rollback commands.\n- [ ] Explain the remaining production gates; compose uses synthetic data and demo mode unless explicitly configured.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\ndocker compose config --quiet\ndocker compose build\nnpm run verify\n```\n\n## Execution Notes\n\nOwner: `bot-1-landing-page`. Dependencies: LR-02. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LR-01",
+    "title": "Retrieve Meta lead details through a permission-gated adapter",
+    "bot": 2,
+    "day1": true,
+    "files": [
+      "services/lead-router/src/adapters/meta.ts",
+      "services/lead-router/src/app.ts",
+      "packages/contracts/src/index.ts",
+      "tests/integration/meta-adapter.test.ts",
+      ".env.example"
+    ],
+    "goal": "The local webhook currently verifies signatures and queues lead IDs only. Add a disabled-by-default Graph API adapter; no real Meta app subscription or access has been established.",
+    "criteria": [
+      "Use an explicitly configured, currently supported Graph API version and allowlisted page IDs.",
+      "Mock Graph responses for success, missing permissions, expired token, 429 and timeout; never call Meta in tests.",
+      "Map only consented, expected fields to the internal contract; never log the access token or raw contact payload.",
+      "Reject unapproved pages and retain stable pageId:leadId idempotency across retries.",
+      "Document the live permission/app-review prerequisites and keep the default fixture path operational."
+    ],
+    "verify": [
+      "npm test -- tests/integration/meta-adapter.test.ts",
+      "npm run typecheck"
+    ],
+    "labels": ["bot-2-lead-webhook", "day-1-sprint", "priority:high"],
+    "body": "## Goal / Context\n\nThe local webhook currently verifies signatures and queues lead IDs only. Add a disabled-by-default Graph API adapter; no real Meta app subscription or access has been established.\n\n## Exact Files to Touch\n\n- `services/lead-router/src/adapters/meta.ts` (add)\n- `services/lead-router/src/app.ts`\n- `packages/contracts/src/index.ts`\n- `tests/integration/meta-adapter.test.ts` (add)\n- `.env.example`\n\n## Concrete Acceptance Criteria\n\n- [ ] Use an explicitly configured, currently supported Graph API version and allowlisted page IDs.\n- [ ] Mock Graph responses for success, missing permissions, expired token, 429 and timeout; never call Meta in tests.\n- [ ] Map only consented, expected fields to the internal contract; never log the access token or raw contact payload.\n- [ ] Reject unapproved pages and retain stable pageId:leadId idempotency across retries.\n- [ ] Document the live permission/app-review prerequisites and keep the default fixture path operational.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/integration/meta-adapter.test.ts\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-2-lead-webhook`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LR-02",
+    "title": "Replace the volatile queue with a transactional durable inbox/outbox",
+    "bot": 2,
+    "day1": true,
+    "files": [
+      "services/lead-router/src/queue.ts",
+      "services/lead-router/src/storage/sqlite.ts",
+      "services/lead-router/src/server.ts",
+      "services/lead-router/migrations/001-inbox-outbox.sql",
+      "tests/integration/durable-queue.test.ts"
+    ],
+    "goal": "The demo queue loses accepted work on restart and discards successful deliveries. Introduce durable acceptance and outbox state without silently changing 202 semantics.",
+    "criteria": [
+      "Commit validated inbound event and unique source/idempotency key before returning 202.",
+      "Use a unique database constraint and transactional worker claim so concurrent retries produce one logical job.",
+      "Recover queued/leased jobs after process restart; test by closing and reopening a temporary database.",
+      "Persist bounded attempts, backoff with jitter, next run time and dead-letter state; add a safe replay operation.",
+      "Never remove undelivered jobs to make capacity; expose backpressure and document retention separately."
+    ],
+    "verify": [
+      "npm test -- tests/integration/durable-queue.test.ts",
+      "npm run build"
+    ],
+    "labels": ["bot-2-lead-webhook", "day-1-sprint", "priority:high"],
+    "body": "## Goal / Context\n\nThe demo queue loses accepted work on restart and discards successful deliveries. Introduce durable acceptance and outbox state without silently changing 202 semantics.\n\n## Exact Files to Touch\n\n- `services/lead-router/src/queue.ts`\n- `services/lead-router/src/storage/sqlite.ts` (add)\n- `services/lead-router/src/server.ts`\n- `services/lead-router/migrations/001-inbox-outbox.sql` (add)\n- `tests/integration/durable-queue.test.ts` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Commit validated inbound event and unique source/idempotency key before returning 202.\n- [ ] Use a unique database constraint and transactional worker claim so concurrent retries produce one logical job.\n- [ ] Recover queued/leased jobs after process restart; test by closing and reopening a temporary database.\n- [ ] Persist bounded attempts, backoff with jitter, next run time and dead-letter state; add a safe replay operation.\n- [ ] Never remove undelivered jobs to make capacity; expose backpressure and document retention separately.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/integration/durable-queue.test.ts\nnpm run build\n```\n\n## Execution Notes\n\nOwner: `bot-2-lead-webhook`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LR-03",
+    "title": "Implement Zalo OA webhook authentication and normalized event mapping",
+    "bot": 2,
+    "files": [
+      "services/lead-router/src/adapters/zalo.ts",
+      "services/lead-router/src/app.ts",
+      "packages/contracts/src/index.ts",
+      "tests/integration/zalo.test.ts",
+      ".env.example"
+    ],
+    "goal": "There is no Zalo endpoint in the baseline. Implement the current official OA signature/replay contract from primary documentation before accepting any event.",
+    "depends": ["LR-02"],
+    "criteria": [
+      "Cite the exact official Zalo OA documentation and supported event version in the adapter README.",
+      "Verify signatures and timestamps on the required original representation; reject replay, invalid or unconfigured deliveries.",
+      "Validate a strict minimal event schema and enqueue with a source-specific unique ID.",
+      "Cover valid, malformed, stale, duplicate, wrong-signature and disabled-config requests with synthetic fixtures.",
+      "Do not send messages, access an OA account or include real Zalo user identifiers in fixtures."
+    ],
+    "verify": [
+      "npm test -- tests/integration/zalo.test.ts",
+      "npm run typecheck"
+    ],
+    "labels": ["bot-2-lead-webhook", "priority:medium"],
+    "body": "## Goal / Context\n\nThere is no Zalo endpoint in the baseline. Implement the current official OA signature/replay contract from primary documentation before accepting any event.\n\n## Exact Files to Touch\n\n- `services/lead-router/src/adapters/zalo.ts` (add)\n- `services/lead-router/src/app.ts`\n- `packages/contracts/src/index.ts`\n- `tests/integration/zalo.test.ts` (add)\n- `.env.example`\n\n## Concrete Acceptance Criteria\n\n- [ ] Cite the exact official Zalo OA documentation and supported event version in the adapter README.\n- [ ] Verify signatures and timestamps on the required original representation; reject replay, invalid or unconfigured deliveries.\n- [ ] Validate a strict minimal event schema and enqueue with a source-specific unique ID.\n- [ ] Cover valid, malformed, stale, duplicate, wrong-signature and disabled-config requests with synthetic fixtures.\n- [ ] Do not send messages, access an OA account or include real Zalo user identifiers in fixtures.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/integration/zalo.test.ts\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-2-lead-webhook`. Dependencies: LR-02. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LR-04",
+    "title": "Deliver leads to Google Sheets with retry-safe row identity",
+    "bot": 2,
+    "files": [
+      "services/lead-router/src/adapters/sheets.ts",
+      "services/lead-router/src/server.ts",
+      "tests/integration/sheets.test.ts",
+      ".env.example",
+      "docs/data-handling.md"
+    ],
+    "goal": "Add the first useful sink behind an explicit enable flag. A local fake Sheets transport must be sufficient to prove behavior; no real sheet is provided.",
+    "depends": ["LR-02"],
+    "criteria": [
+      "Authenticate through deployment-injected credentials and a configured sheet ID, with least-privilege sharing documented.",
+      "Use a stable event ID column and reconciliation so timeout-after-write does not append duplicate leads.",
+      "Retry 429/5xx with bounded delay; permanent failures go to a dead letter without raw payload logging.",
+      "Apply formula-injection escaping to strings beginning with =, +, - or @ before writing spreadsheet cells.",
+      "Test duplicate delivery, timeout-after-write, permission failure and dangerous cell input using fake transport."
+    ],
+    "verify": [
+      "npm test -- tests/integration/sheets.test.ts",
+      "npm run typecheck"
+    ],
+    "labels": ["bot-2-lead-webhook", "priority:medium"],
+    "body": "## Goal / Context\n\nAdd the first useful sink behind an explicit enable flag. A local fake Sheets transport must be sufficient to prove behavior; no real sheet is provided.\n\n## Exact Files to Touch\n\n- `services/lead-router/src/adapters/sheets.ts` (add)\n- `services/lead-router/src/server.ts`\n- `tests/integration/sheets.test.ts` (add)\n- `.env.example`\n- `docs/data-handling.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Authenticate through deployment-injected credentials and a configured sheet ID, with least-privilege sharing documented.\n- [ ] Use a stable event ID column and reconciliation so timeout-after-write does not append duplicate leads.\n- [ ] Retry 429/5xx with bounded delay; permanent failures go to a dead letter without raw payload logging.\n- [ ] Apply formula-injection escaping to strings beginning with =, +, - or @ before writing spreadsheet cells.\n- [ ] Test duplicate delivery, timeout-after-write, permission failure and dangerous cell input using fake transport.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/integration/sheets.test.ts\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-2-lead-webhook`. Dependencies: LR-02. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LR-05",
+    "title": "Add a CRM delivery adapter and redacted failure alerts",
+    "bot": 2,
+    "files": [
+      "services/lead-router/src/adapters/crm.ts",
+      "services/lead-router/src/alerts.ts",
+      "services/lead-router/src/server.ts",
+      "tests/integration/crm.test.ts",
+      ".env.example"
+    ],
+    "goal": "Provide a vendor-neutral CRM transport and operational failure notification. Select the real vendor only through explicit configuration and its API contract.",
+    "depends": ["LR-02"],
+    "criteria": [
+      "Require an HTTPS allowlisted CRM URL, server credential and remote idempotency key.",
+      "Separate retryable network/429/5xx failures from permanent validation/authentication failures.",
+      "Alerts include event ID, status category and counts, excluding phone/name/body/token.",
+      "Keep connectors disabled unless all required configuration is valid.",
+      "Fake-transport tests cover delivery, duplicate request, timeout and redaction."
+    ],
+    "verify": [
+      "npm test -- tests/integration/crm.test.ts",
+      "npm run typecheck"
+    ],
+    "labels": ["bot-2-lead-webhook", "priority:medium"],
+    "body": "## Goal / Context\n\nProvide a vendor-neutral CRM transport and operational failure notification. Select the real vendor only through explicit configuration and its API contract.\n\n## Exact Files to Touch\n\n- `services/lead-router/src/adapters/crm.ts` (add)\n- `services/lead-router/src/alerts.ts` (add)\n- `services/lead-router/src/server.ts`\n- `tests/integration/crm.test.ts` (add)\n- `.env.example`\n\n## Concrete Acceptance Criteria\n\n- [ ] Require an HTTPS allowlisted CRM URL, server credential and remote idempotency key.\n- [ ] Separate retryable network/429/5xx failures from permanent validation/authentication failures.\n- [ ] Alerts include event ID, status category and counts, excluding phone/name/body/token.\n- [ ] Keep connectors disabled unless all required configuration is valid.\n- [ ] Fake-transport tests cover delivery, duplicate request, timeout and redaction.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/integration/crm.test.ts\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-2-lead-webhook`. Dependencies: LR-02. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "LR-06",
+    "title": "Gate production ingress with abuse controls and data retention",
+    "bot": 2,
+    "files": [
+      "services/lead-router/src/app.ts",
+      "services/lead-router/src/storage/retention.ts",
+      "apps/landing-pages/src/app/api/leads/route.ts",
+      "tests/integration/abuse-controls.test.ts",
+      "docs/data-handling.md"
+    ],
+    "goal": "Origin checking is not rate limiting. Add explicit production gates before routing real traffic or storing customer contacts.",
+    "depends": ["LR-02"],
+    "criteria": [
+      "Bound per-source request rates and return 429 with Retry-After; do not trust arbitrary X-Forwarded-For headers.",
+      "Use configured public origin rather than arbitrary Host values in production.",
+      "Provide deletion/retention jobs over durable records with deterministic time-based tests.",
+      "Redact access logs and exceptions; demonstrate that token and contact fields never appear.",
+      "Demo remains usable locally; deployed mode refuses known demonstration secrets and volatile storage."
+    ],
+    "verify": [
+      "npm test -- tests/integration/abuse-controls.test.ts",
+      "npm run verify"
+    ],
+    "labels": ["bot-2-lead-webhook", "priority:medium"],
+    "body": "## Goal / Context\n\nOrigin checking is not rate limiting. Add explicit production gates before routing real traffic or storing customer contacts.\n\n## Exact Files to Touch\n\n- `services/lead-router/src/app.ts`\n- `services/lead-router/src/storage/retention.ts` (add)\n- `apps/landing-pages/src/app/api/leads/route.ts`\n- `tests/integration/abuse-controls.test.ts` (add)\n- `docs/data-handling.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Bound per-source request rates and return 429 with Retry-After; do not trust arbitrary X-Forwarded-For headers.\n- [ ] Use configured public origin rather than arbitrary Host values in production.\n- [ ] Provide deletion/retention jobs over durable records with deterministic time-based tests.\n- [ ] Redact access logs and exceptions; demonstrate that token and contact fields never appear.\n- [ ] Demo remains usable locally; deployed mode refuses known demonstration secrets and volatile storage.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/integration/abuse-controls.test.ts\nnpm run verify\n```\n\n## Execution Notes\n\nOwner: `bot-2-lead-webhook`. Dependencies: LR-02. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "MS-01",
+    "title": "Build a permission-gated, bounded live-source fetch policy",
+    "bot": 3,
+    "day1": true,
+    "files": [
+      "services/market-scraper/src/fetch-policy.ts",
+      "services/market-scraper/sources.example.json",
+      "tests/unit/fetch-policy.test.ts",
+      "docs/scraper-sources.md"
+    ],
+    "goal": "The baseline reads local HTML only. Implement the safety and source-approval boundary before adding any live property site.",
+    "criteria": [
+      "Default every source to disabled; document an approved source/domain and permission basis before enabling it.",
+      "Require HTTPS, allowlist hosts, reject private/loopback/link-local destinations and revalidate every redirect/DNS resolution.",
+      "Honor a documented robots policy, explicit request interval, timeout, response-size limit and bounded retry budget.",
+      "Test redirects to disallowed/private hosts, blocked robots rules, timeouts and maximum response size without network access.",
+      "Never bypass logins, paywalls, captchas or site access restrictions."
+    ],
+    "verify": [
+      "npm test -- tests/unit/fetch-policy.test.ts",
+      "npm run test:scraper"
+    ],
+    "labels": ["bot-3-scraper", "day-1-sprint", "priority:high"],
+    "body": "## Goal / Context\n\nThe baseline reads local HTML only. Implement the safety and source-approval boundary before adding any live property site.\n\n## Exact Files to Touch\n\n- `services/market-scraper/src/fetch-policy.ts` (add)\n- `services/market-scraper/sources.example.json`\n- `tests/unit/fetch-policy.test.ts` (add)\n- `docs/scraper-sources.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Default every source to disabled; document an approved source/domain and permission basis before enabling it.\n- [ ] Require HTTPS, allowlist hosts, reject private/loopback/link-local destinations and revalidate every redirect/DNS resolution.\n- [ ] Honor a documented robots policy, explicit request interval, timeout, response-size limit and bounded retry budget.\n- [ ] Test redirects to disallowed/private hosts, blocked robots rules, timeouts and maximum response size without network access.\n- [ ] Never bypass logins, paywalls, captchas or site access restrictions.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/unit/fetch-policy.test.ts\nnpm run test:scraper\n```\n\n## Execution Notes\n\nOwner: `bot-3-scraper`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "MS-02",
+    "title": "Detect scraper DOM drift with versioned extraction fixtures",
+    "bot": 3,
+    "files": [
+      "services/market-scraper/src/extract.ts",
+      "services/market-scraper/src/adapters/fixture-market.ts",
+      "fixtures/market/listings-drift.html",
+      "tests/e2e/scraper.spec.ts"
+    ],
+    "goal": "Add adapter health evidence to distinguish an empty market from broken selectors. Retain original fixtures and add a changed-DOM fixture.",
+    "criteria": [
+      "Extract the original fixture with two observations, stable IDs and explicit total/per_m2 units.",
+      "A missing selector or unexpectedly empty result emits a structured drift diagnostic and never overwrites valid data with an empty success.",
+      "Include original, duplicate, incomplete and changed-DOM fixtures with synthetic content only.",
+      "Add browser tests for both valid extraction and controlled drift failure."
+    ],
+    "verify": [
+      "npx playwright test tests/e2e/scraper.spec.ts --project=chromium-desktop",
+      "npm run test:scraper"
+    ],
+    "labels": ["bot-3-scraper", "priority:medium"],
+    "body": "## Goal / Context\n\nAdd adapter health evidence to distinguish an empty market from broken selectors. Retain original fixtures and add a changed-DOM fixture.\n\n## Exact Files to Touch\n\n- `services/market-scraper/src/extract.ts`\n- `services/market-scraper/src/adapters/fixture-market.ts` (add)\n- `fixtures/market/listings-drift.html` (add)\n- `tests/e2e/scraper.spec.ts` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Extract the original fixture with two observations, stable IDs and explicit total/per_m2 units.\n- [ ] A missing selector or unexpectedly empty result emits a structured drift diagnostic and never overwrites valid data with an empty success.\n- [ ] Include original, duplicate, incomplete and changed-DOM fixtures with synthetic content only.\n- [ ] Add browser tests for both valid extraction and controlled drift failure.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpx playwright test tests/e2e/scraper.spec.ts --project=chromium-desktop\nnpm run test:scraper\n```\n\n## Execution Notes\n\nOwner: `bot-3-scraper`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "MS-03",
+    "title": "Persist observations and export comparable pricing summaries",
+    "bot": 3,
+    "files": [
+      "services/market-scraper/src/store.ts",
+      "services/market-scraper/src/valuation.ts",
+      "packages/contracts/src/market.ts",
+      "tests/unit/valuation.test.ts",
+      "tests/integration/market-store.test.ts"
+    ],
+    "goal": "Turn synthetic observations into typed storage and reproducible descriptive summaries. Do not present asking-price aggregates as appraisals or transaction prices.",
+    "criteria": [
+      "Validate observation IDs, UTC timestamps, project IDs, source attribution and VND unit.",
+      "Upsert by source/listing/time identity; duplicate runs do not multiply observations.",
+      "Compute medians only within the same project, currency and unit; flag sample size and stale records.",
+      "Export CSV with safe string escaping and no customer records.",
+      "Test mixed-unit rejection, stale data, duplicate runs and insufficient samples."
+    ],
+    "verify": [
+      "npm test -- tests/unit/valuation.test.ts tests/integration/market-store.test.ts",
+      "npm run typecheck"
+    ],
+    "labels": ["bot-3-scraper", "priority:medium"],
+    "body": "## Goal / Context\n\nTurn synthetic observations into typed storage and reproducible descriptive summaries. Do not present asking-price aggregates as appraisals or transaction prices.\n\n## Exact Files to Touch\n\n- `services/market-scraper/src/store.ts` (add)\n- `services/market-scraper/src/valuation.ts` (add)\n- `packages/contracts/src/market.ts` (add)\n- `tests/unit/valuation.test.ts` (add)\n- `tests/integration/market-store.test.ts` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Validate observation IDs, UTC timestamps, project IDs, source attribution and VND unit.\n- [ ] Upsert by source/listing/time identity; duplicate runs do not multiply observations.\n- [ ] Compute medians only within the same project, currency and unit; flag sample size and stale records.\n- [ ] Export CSV with safe string escaping and no customer records.\n- [ ] Test mixed-unit rejection, stale data, duplicate runs and insufficient samples.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/unit/valuation.test.ts tests/integration/market-store.test.ts\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-3-scraper`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "MS-04",
+    "title": "Schedule bounded scraper runs with health and failure artifacts",
+    "bot": 3,
+    "files": [
+      "services/market-scraper/src/run.ts",
+      ".github/workflows/scraper.yml",
+      "tests/integration/scraper-runner.test.ts",
+      "docs/scraper-operations.md"
+    ],
+    "goal": "Add a repeatable scheduled runner only after fetch policy and drift checks exist. The checked-in workflow must remain manual/fixture-only until a source is approved.",
+    "depends": ["MS-01", "MS-02", "MS-03"],
+    "criteria": [
+      "Implement per-source lock, maximum runtime, run ID and row/failure counts.",
+      "Manual fixture run uploads redacted extraction diagnostics; no live source runs by default.",
+      "Overlap is rejected or skipped with a recorded reason; failures return nonzero.",
+      "Document source disable, rollback and last-good observation recovery."
+    ],
+    "verify": [
+      "npm test -- tests/integration/scraper-runner.test.ts",
+      "npm run test:scraper"
+    ],
+    "labels": ["bot-3-scraper", "priority:medium"],
+    "body": "## Goal / Context\n\nAdd a repeatable scheduled runner only after fetch policy and drift checks exist. The checked-in workflow must remain manual/fixture-only until a source is approved.\n\n## Exact Files to Touch\n\n- `services/market-scraper/src/run.ts` (add)\n- `.github/workflows/scraper.yml` (add)\n- `tests/integration/scraper-runner.test.ts` (add)\n- `docs/scraper-operations.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Implement per-source lock, maximum runtime, run ID and row/failure counts.\n- [ ] Manual fixture run uploads redacted extraction diagnostics; no live source runs by default.\n- [ ] Overlap is rejected or skipped with a recorded reason; failures return nonzero.\n- [ ] Document source disable, rollback and last-good observation recovery.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/integration/scraper-runner.test.ts\nnpm run test:scraper\n```\n\n## Execution Notes\n\nOwner: `bot-3-scraper`. Dependencies: MS-01, MS-02, MS-03. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "QA-01",
+    "title": "Fix reproduced 403 rejection of same-origin form A/B submissions",
+    "bot": 4,
+    "day1": true,
+    "bug": true,
+    "files": [
+      "apps/landing-pages/src/app/api/leads/route.ts",
+      "tests/integration/landing-api.test.ts",
+      "tests/e2e/forms.spec.ts",
+      "docs/qa/form-failures.md",
+      ".env.example"
+    ],
+    "goal": "Confirmed on the new Windows baseline: Chromium submits from http://127.0.0.1:3000 to /api/leads with the same Origin and receives HTTP 403. Both variant A and B therefore show the retry error rather than queued success. Investigate Next request-origin reconstruction; the trace proves the 403 but the exact internal request URL was not instrumented. This is newly observed evidence, not a recovered historical test.",
+    "criteria": [
+      "Reproduce A and B using the existing browser assertions without weakening or skipping them.",
+      "Fix trusted origin configuration so the explicitly configured local/public origin is accepted, while foreign, null, missing and untrusted forwarded origins remain rejected.",
+      "Add proxy integration coverage for the actual 127.0.0.1 deployment case and any internal/external URL mismatch; keep router token server-only.",
+      "Make the existing A/B success cases pass on desktop/mobile; the unrelated strict-locator failures remain tracked in QA-02.",
+      "Document the distinction from the unavailable historical reports and record before/after status evidence."
+    ],
+    "verify": [
+      "npm run build",
+      "npx playwright test tests/e2e/forms.spec.ts --grep \"variant A queues|variant B queues\"",
+      "npm test -- tests/integration/landing-api.test.ts"
+    ],
+    "note": "Confirmed new-baseline failure: 4 A/B cases fail across two browser profiles. Original historical source/tests remain unavailable and unverified.",
+    "labels": ["bot-4-qa", "day-1-sprint", "priority:high", "bug"],
+    "body": "## Goal / Context\n\nConfirmed on the new Windows baseline: Chromium submits from http://127.0.0.1:3000 to /api/leads with the same Origin and receives HTTP 403. Both variant A and B therefore show the retry error rather than queued success. Investigate Next request-origin reconstruction; the trace proves the 403 but the exact internal request URL was not instrumented. This is newly observed evidence, not a recovered historical test.\n\n## Exact Files to Touch\n\n- `apps/landing-pages/src/app/api/leads/route.ts`\n- `tests/integration/landing-api.test.ts`\n- `tests/e2e/forms.spec.ts`\n- `docs/qa/form-failures.md`\n- `.env.example`\n\n## Concrete Acceptance Criteria\n\n- [ ] Reproduce A and B using the existing browser assertions without weakening or skipping them.\n- [ ] Fix trusted origin configuration so the explicitly configured local/public origin is accepted, while foreign, null, missing and untrusted forwarded origins remain rejected.\n- [ ] Add proxy integration coverage for the actual 127.0.0.1 deployment case and any internal/external URL mismatch; keep router token server-only.\n- [ ] Make the existing A/B success cases pass on desktop/mobile; the unrelated strict-locator failures remain tracked in QA-02.\n- [ ] Document the distinction from the unavailable historical reports and record before/after status evidence.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm run build\nnpx playwright test tests/e2e/forms.spec.ts --grep \"variant A queues|variant B queues\"\nnpm test -- tests/integration/landing-api.test.ts\n```\n\n## Execution Notes\n\nOwner: `bot-4-qa`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n\n**Evidence limitation:** Confirmed new-baseline failure: 4 A/B cases fail across two browser profiles. Original historical source/tests remain unavailable and unverified.\n"
+  },
+  {
+    "id": "QA-02",
+    "title": "Fix reproduced strict-locator collision with the Next route announcer",
+    "bot": 4,
+    "day1": true,
+    "bug": true,
+    "files": ["tests/e2e/forms.spec.ts", "docs/qa/form-failures.md"],
+    "goal": "Confirmed on the new baseline: page.getByRole(\"alert\") resolves both the form error paragraph and Next.js __next-route-announcer__. The invalid-phone and upstream-retry cases fail in strict mode on desktop and mobile. The error text is present; this is an ambiguous test locator, not evidence that validation failed.",
+    "criteria": [
+      "Keep the invalid-phone and upstream-failure message assertions unchanged in meaning.",
+      "Scope the alert locator to the named Project enquiry form; do not use .first(), remove strictness, alter the expected message, skip or delete cases.",
+      "Prove the invalid-phone case passes on both browser profiles after scoping.",
+      "Keep the upstream retry success assertion; full success also depends on QA-01 fixing the real 403 rejection.",
+      "Record the original strict-mode error and updated scoped assertion in the QA evidence document."
+    ],
+    "depends": ["QA-01"],
+    "verify": [
+      "npm run build",
+      "npx playwright test tests/e2e/forms.spec.ts --grep \"invalid phone|upstream failure\""
+    ],
+    "note": "Confirmed new-baseline failure: 4 strict-locator cases fail across two browser profiles. This does not establish the identity of either missing historical form test.",
+    "labels": ["bot-4-qa", "day-1-sprint", "priority:high", "bug"],
+    "body": "## Goal / Context\n\nConfirmed on the new baseline: page.getByRole(\"alert\") resolves both the form error paragraph and Next.js __next-route-announcer__. The invalid-phone and upstream-retry cases fail in strict mode on desktop and mobile. The error text is present; this is an ambiguous test locator, not evidence that validation failed.\n\n## Exact Files to Touch\n\n- `tests/e2e/forms.spec.ts`\n- `docs/qa/form-failures.md`\n\n## Concrete Acceptance Criteria\n\n- [ ] Keep the invalid-phone and upstream-failure message assertions unchanged in meaning.\n- [ ] Scope the alert locator to the named Project enquiry form; do not use .first(), remove strictness, alter the expected message, skip or delete cases.\n- [ ] Prove the invalid-phone case passes on both browser profiles after scoping.\n- [ ] Keep the upstream retry success assertion; full success also depends on QA-01 fixing the real 403 rejection.\n- [ ] Record the original strict-mode error and updated scoped assertion in the QA evidence document.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm run build\nnpx playwright test tests/e2e/forms.spec.ts --grep \"invalid phone|upstream failure\"\n```\n\n## Execution Notes\n\nOwner: `bot-4-qa`. Dependencies: QA-01. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n\n**Evidence limitation:** Confirmed new-baseline failure: 4 strict-locator cases fail across two browser profiles. This does not establish the identity of either missing historical form test.\n"
+  },
+  {
+    "id": "QA-03",
+    "title": "Add automated accessibility checks and keyboard assertions",
+    "bot": 4,
+    "day1": true,
+    "files": [
+      "tests/e2e/accessibility.spec.ts",
+      "package.json",
+      "package-lock.json",
+      "apps/landing-pages/src/components/LeadForm.tsx"
+    ],
+    "goal": "Add axe checks and keyboard interaction coverage beyond the baseline role/label assertions. Keep third-party test packages dev-only.",
+    "criteria": [
+      "Scan catalogue, privacy and all project variants on desktop/mobile for serious or critical axe violations.",
+      "Verify visible focus, input labels, consent target size and accessible error association.",
+      "After invalid submission, focus moves to the first invalid field or a linked summary.",
+      "Add fixtures/assertions for long names and narrow viewports without loading customer PII."
+    ],
+    "verify": [
+      "npx playwright test tests/e2e/accessibility.spec.ts",
+      "npm run typecheck"
+    ],
+    "labels": ["bot-4-qa", "day-1-sprint", "priority:high"],
+    "body": "## Goal / Context\n\nAdd axe checks and keyboard interaction coverage beyond the baseline role/label assertions. Keep third-party test packages dev-only.\n\n## Exact Files to Touch\n\n- `tests/e2e/accessibility.spec.ts` (add)\n- `package.json`\n- `package-lock.json`\n- `apps/landing-pages/src/components/LeadForm.tsx`\n\n## Concrete Acceptance Criteria\n\n- [ ] Scan catalogue, privacy and all project variants on desktop/mobile for serious or critical axe violations.\n- [ ] Verify visible focus, input labels, consent target size and accessible error association.\n- [ ] After invalid submission, focus moves to the first invalid field or a linked summary.\n- [ ] Add fixtures/assertions for long names and narrow viewports without loading customer PII.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpx playwright test tests/e2e/accessibility.spec.ts\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-4-qa`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "QA-04",
+    "title": "Add an opt-in deployed form smoke check with synthetic data",
+    "bot": 4,
+    "files": [
+      "tests/live/form-smoke.spec.ts",
+      "playwright.live.config.ts",
+      ".github/workflows/live-smoke.yml",
+      "docs/live-qa.md"
+    ],
+    "goal": "Separate local fixture E2E from real deployment health. No live environment is supplied; require an explicit approved target and isolate test contacts.",
+    "depends": ["LP-04", "LR-06"],
+    "criteria": [
+      "Default live checks to off and require an HTTPS allowlisted target plus protected environment approval.",
+      "Tag and clean up synthetic leads without contacting sales or modifying customer records.",
+      "Measure response status and latency with timestamps; no claim that local CI proves production availability.",
+      "Persist redacted failure traces and document cleanup/kill switch behavior."
+    ],
+    "verify": [
+      "npx playwright test --config=playwright.live.config.ts --list",
+      "npm run typecheck"
+    ],
+    "labels": ["bot-4-qa", "priority:medium"],
+    "body": "## Goal / Context\n\nSeparate local fixture E2E from real deployment health. No live environment is supplied; require an explicit approved target and isolate test contacts.\n\n## Exact Files to Touch\n\n- `tests/live/form-smoke.spec.ts` (add)\n- `playwright.live.config.ts` (add)\n- `.github/workflows/live-smoke.yml` (add)\n- `docs/live-qa.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Default live checks to off and require an HTTPS allowlisted target plus protected environment approval.\n- [ ] Tag and clean up synthetic leads without contacting sales or modifying customer records.\n- [ ] Measure response status and latency with timestamps; no claim that local CI proves production availability.\n- [ ] Persist redacted failure traces and document cleanup/kill switch behavior.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpx playwright test --config=playwright.live.config.ts --list\nnpm run typecheck\n```\n\n## Execution Notes\n\nOwner: `bot-4-qa`. Dependencies: LP-04, LR-06. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "QA-05",
+    "title": "Create a least-privilege QA issue/PR reporter with dry-run mode",
+    "bot": 4,
+    "files": [
+      "scripts/qa-report.mjs",
+      "tests/unit/qa-report.test.ts",
+      ".github/workflows/qa-report.yml",
+      "docs/bot-permissions.md"
+    ],
+    "goal": "Convert structured QA failures into deduplicated issue/PR proposals. The baseline does not autonomously create fixes; add a reviewable reporting boundary first.",
+    "criteria": [
+      "Default to dry-run; consume only validated test-report fields, never instructions embedded in page text or traces.",
+      "Deduplicate by stable failure fingerprint and retain links to run/trace evidence.",
+      "Use a GitHub App or scoped workflow token; no PATs or production secrets in fork PR jobs.",
+      "Do not self-approve or self-merge; human review remains required.",
+      "Tests cover duplicate failures, malicious report strings, redaction and unknown outcomes before any mutation retry."
+    ],
+    "verify": [
+      "npm test -- tests/unit/qa-report.test.ts",
+      "node scripts/qa-report.mjs --dry-run --fixture fixtures/qa/failure.json"
+    ],
+    "labels": ["bot-4-qa", "priority:medium"],
+    "body": "## Goal / Context\n\nConvert structured QA failures into deduplicated issue/PR proposals. The baseline does not autonomously create fixes; add a reviewable reporting boundary first.\n\n## Exact Files to Touch\n\n- `scripts/qa-report.mjs` (add)\n- `tests/unit/qa-report.test.ts` (add)\n- `.github/workflows/qa-report.yml` (add)\n- `docs/bot-permissions.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Default to dry-run; consume only validated test-report fields, never instructions embedded in page text or traces.\n- [ ] Deduplicate by stable failure fingerprint and retain links to run/trace evidence.\n- [ ] Use a GitHub App or scoped workflow token; no PATs or production secrets in fork PR jobs.\n- [ ] Do not self-approve or self-merge; human review remains required.\n- [ ] Tests cover duplicate failures, malicious report strings, redaction and unknown outcomes before any mutation retry.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/unit/qa-report.test.ts\nnode scripts/qa-report.mjs --dry-run --fixture fixtures/qa/failure.json\n```\n\n## Execution Notes\n\nOwner: `bot-4-qa`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  },
+  {
+    "id": "QA-06",
+    "title": "Record daily sprint evidence and enforce the release checklist",
+    "bot": 4,
+    "files": [
+      "docs/sprint/daily-template.md",
+      "scripts/sprint-report.mjs",
+      "tests/unit/sprint-report.test.ts",
+      "docs/release-checklist.md"
+    ],
+    "goal": "Make grant milestones auditable through actual merged PRs, run results and measured usage. Do not equate issue count or bot concurrency with billed compute.",
+    "criteria": [
+      "Generate a dated report of linked merged PRs, passed/failed checks, remaining blockers and actual spend supplied by the account owner.",
+      "Do not count closed-without-merge issues as merged PRs or retry one PR as several milestones.",
+      "Require durable storage, approved sources, secret configuration and live smoke evidence before declaring production readiness.",
+      "Include a $500 starter checkpoint and a top-up review after the first ten substantive reviewed PRs, with no automatic purchase."
+    ],
+    "verify": [
+      "npm test -- tests/unit/sprint-report.test.ts",
+      "node scripts/sprint-report.mjs --dry-run"
+    ],
+    "labels": ["bot-4-qa", "priority:medium"],
+    "body": "## Goal / Context\n\nMake grant milestones auditable through actual merged PRs, run results and measured usage. Do not equate issue count or bot concurrency with billed compute.\n\n## Exact Files to Touch\n\n- `docs/sprint/daily-template.md` (add)\n- `scripts/sprint-report.mjs` (add)\n- `tests/unit/sprint-report.test.ts` (add)\n- `docs/release-checklist.md` (add)\n\n## Concrete Acceptance Criteria\n\n- [ ] Generate a dated report of linked merged PRs, passed/failed checks, remaining blockers and actual spend supplied by the account owner.\n- [ ] Do not count closed-without-merge issues as merged PRs or retry one PR as several milestones.\n- [ ] Require durable storage, approved sources, secret configuration and live smoke evidence before declaring production readiness.\n- [ ] Include a $500 starter checkpoint and a top-up review after the first ten substantive reviewed PRs, with no automatic purchase.\n\n## Verification Command\n\nRun from the repository root after `npm ci --ignore-scripts`:\n\n```powershell\nnpm test -- tests/unit/sprint-report.test.ts\nnode scripts/sprint-report.mjs --dry-run\n```\n\n## Execution Notes\n\nOwner: `bot-4-qa`. Start from the current main baseline. New test paths and scripts listed above must be implemented by this task before running their verification commands. Browser checks require `npx playwright install chromium`. Keep real failures visible and attach exact output; never use `test.skip`, `test.fixme` or weakened assertions to claim completion.\n"
+  }
+]

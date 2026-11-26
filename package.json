@@ -1,0 +1,42 @@
+{
+  "name": "siproperty-growth-ops",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.12.0 <27"
+  },
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run typecheck && npm run build --workspace @siproperty/landing-pages && npm run build --workspace @siproperty/lead-router",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:scraper": "tsx services/market-scraper/src/smoke.ts",
+    "security:scan": "node scripts/security-scan.mjs",
+    "verify": "npm run security:scan && npm run test && npm run build",
+    "start:demo": "node scripts/dev.mjs --production",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "prettier": "3.10.1",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.3",
+    "vitest": "5.1.2"
+  }
+}

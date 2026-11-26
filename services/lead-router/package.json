@@ -1,0 +1,11 @@
+{
+  "name": "@siproperty/lead-router",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsup src/server.ts --format esm --platform node --target node24 --out-dir dist",
+    "start": "node dist/server.js"
+  }
+}

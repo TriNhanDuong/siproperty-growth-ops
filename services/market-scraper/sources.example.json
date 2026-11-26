@@ -1,0 +1,12 @@
+{
+  "enabled": false,
+  "sources": [
+    {
+      "host": "market.example.invalid",
+      "projectId": "harbour-residences",
+      "approved": false,
+      "minimumIntervalMs": 3000
+    }
+  ],
+  "note": "No live domains configured. Source permission, robots handling and fetch policy are required before live scraping."
+}
